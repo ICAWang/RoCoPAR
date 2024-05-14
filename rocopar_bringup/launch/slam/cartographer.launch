@@ -1,0 +1,11 @@
+<launch>
+    <!-- arguments -->
+    <arg name="map_topic" default="map"/>
+    <arg name="scan_topic" default="scan"/>
+
+    <!-- cartographer -->
+    <node name="cartographer" pkg="cartographer_ros" type="cartographer_node" args="-configuration_directory $(find rocopar_bringup)/config/slam
+    -configuration_basename build_map_2d.lua">
+        <remap from="horizontal_laser_2d" to="$(arg scan_topic)" />
+    </node>
+</launch>

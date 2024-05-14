@@ -1,0 +1,110 @@
+<launch>
+	<!-- This file contains a robot instance for multi-robot system. -->
+	<!-- arguments -->
+	<arg name="robot_namespace" default=""/>
+	<arg name="id" default="0"/>
+	<arg name="max_com_dis" default="0.0"/>
+	<arg name="number_of_robots" default="3"/>
+	<arg name="init_pose_x" default="0.0"/>
+	<arg name="init_pose_y" default="0.0"/>
+	<arg name="init_pose_z" default="0.0"/>
+	<arg name="init_pose_yaw" default="0.0"/>
+	<arg name="base_pose_x" default="0.0"/>
+	<arg name="base_pose_y" default="0.0"/>
+	<arg name="base_pose_z" default="0.0"/>
+	<arg name="maxUrange" default="5.9"/>
+	<arg name="xmin" default="-20"/>
+	<arg name="ymin" default="-20"/>
+	<arg name="xmax" default="20"/>
+	<arg name="ymax" default="20"/>
+	<arg name="frontier_max_x" default="15"/>
+    <arg name="frontier_max_y" default="20"/>
+    <arg name="frontier_min_x" default="-15"/>
+    <arg name="frontier_min_y" default="-3"/>
+    <arg name="slam_method" default="slam_gmapping" doc="[slam_gmapping, slam_toolbox, cartographer]"/>
+	<arg name="model" default="diff" doc="[diff, omni, car]"/>
+	<arg name="time_delay" default="60.0"/>
+	<arg name="Te" default="20.0"/>
+	<arg name="max_speed" default="0.65"/>
+	<arg name="map_origin_x" default="0.0"/>
+	<arg name="map_origin_y" default="0.0"/>
+
+	<!-- begin a robot instance-->
+	<group ns="$(arg robot_namespace)">
+		<!-- parameters -->
+        <param name="map_merge/init_pose_x" value="0"/>
+        <param name="map_merge/init_pose_y" value="0"/>
+        <param name="map_merge/init_pose_z" value="0"/>
+        <param name="map_merge/init_pose_yaw" value="0"/>
+
+		<!-- move_base -->
+		<include file="$(find rocopar_bringup)/launch/navigation/move_base.launch">
+			<arg name="robot_namespace" value="$(arg robot_namespace)"/>
+			<arg name="model" value="$(arg model)"/>
+			<arg name="map_topic" value="merged_map"/>
+			<arg name="scan_topic" value="base_scan"/>
+		</include>
+
+		<!-- slam_method -->
+		<include file="$(find rocopar_bringup)/launch/slam/$(arg slam_method).launch">
+			<arg name="robot_namespace" value="$(arg robot_namespace)"/>
+			<arg name="map_topic" value="map"/>
+			<arg name="scan_topic" value="base_scan"/>
+			<arg name="maxUrange" value="$(arg maxUrange)"/>
+			<arg name="xmin" value="$(arg xmin)"/>
+			<arg name="ymin" value="$(arg ymin)"/>
+			<arg name="xmax" value="$(arg xmax)"/>
+			<arg name="ymax" value="$(arg ymax)"/>
+		</include>
+
+		<!-- map_merge-->
+		<include file="$(find rocopar_bringup)/launch/robot_map_merge.launch">
+			<arg name="id" value="$(arg id)"/>
+			<arg name="max_com_dis" value="$(arg max_com_dis)"/>
+			<arg name="robot_name" value="$(arg robot_namespace)"/>
+			<arg name="map_origin_x" value="$(arg map_origin_x)"/>
+			<arg name="map_origin_y" value="$(arg map_origin_y)"/>
+		</include>
+
+		<!-- inter_planner-->
+		<!-->
+		<include file="$(find exploration_planner)/launch/inter_planner.launch">
+			<arg name="id" value="$(arg id)"/>
+			<arg name="time_delay" value="$(arg time_delay)"/>
+			<arg name="Te" value="$(arg Te)"/>
+			<arg name="max_com_dis" value="$(arg max_com_dis)"/>
+			<arg name="max_speed" value="$(arg max_speed)"/>
+			<arg name="number_of_robots" value="$(arg number_of_robots)"/>
+			<arg name="init_pose_x" value="$(arg init_pose_x)"/>
+			<arg name="init_pose_y" value="$(arg init_pose_y)"/>
+			<arg name="init_pose_z" value="$(arg init_pose_z)"/>
+			<arg name="base_pose_x" value="$(arg base_pose_x)"/>
+			<arg name="base_pose_y" value="$(arg base_pose_y)"/>
+			<arg name="base_pose_z" value="$(arg base_pose_z)"/>
+		</include>
+		-->
+
+		<!-- frontier_generator-->
+		<!-->
+		<include file="$(find exploration_planner)/launch/frontier_generator.launch">
+			<arg name="id" value="$(arg id)"/>
+			<arg name="frontier_max_x" value="$(arg frontier_max_x)"/>
+			<arg name="frontier_max_y" value="$(arg frontier_max_y)"/>
+			<arg name="frontier_min_x" value="$(arg frontier_min_x)"/>
+			<arg name="frontier_min_y" value="$(arg frontier_min_y)"/>
+		</include>
+		-->
+
+		<!-- color_map-->
+		<!--<include file="$(find rocopar_visulization)/launch/color_map.launch">
+			<arg name="id" value="$(arg id)"/>
+		</include>-->
+
+		<!-- static TF broadcaster -->
+		<node name="static_tf_broadcaster_1" pkg="tf2_ros" type="static_transform_publisher"
+			args="0 0 0 0 0 0 map $(arg robot_namespace)/map"/>
+
+		<node name="static_tf_broadcaster_2" pkg="tf2_ros" type="static_transform_publisher"
+			args="0 0 0 0 0 0 $(arg robot_namespace)/map $(arg robot_namespace)/odom"/>			
+	</group>
+</launch>

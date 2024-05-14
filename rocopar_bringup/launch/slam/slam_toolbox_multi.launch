@@ -1,0 +1,25 @@
+<launch>
+    <!-- arguments -->
+    <arg name="robot_namespace" default=""/>
+    <arg name="map_topic" default="map"/>
+    <arg name="scan_topic" default="scan"/>
+
+    <!-- slam_toolbox -->
+    <node name="slam_toolbox" pkg="slam_toolbox" type="async_slam_toolbox_node" output="screen">
+        <remap from="map" to="$(arg map_topic)"/>
+        <remap from="scan" to="$(arg scan_topic)"/>
+        <param name="map_frame" value="$(arg robot_namespace)/map"/>
+        <param name="odom_frame" value="$(arg robot_namespace)/slam_odom"/>
+        <param name="base_frame" value="$(arg robot_namespace)/base_link"/>
+        <rosparam command="load" file="$(find rocopar_bringup)/config/slam/mapper_params_online_async.yaml"/>
+    </node>
+
+    <!-- map_extender -->
+    <node name="map_extender" pkg="rocopar_exploration" type="map_extender" respawn="true">
+        <remap from="map" to="$(arg map_topic)"/>
+        <param from="map_frame" to="$(arg robot_namespace)/map"/>
+    </node>
+
+    <!-- static TF broadcaster -->
+    <!-- <node name="$(arg robot_namespace)_map_tf_broadcaster" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 $(arg robot_namespace)/new_map $(arg robot_namespace)/map"/> -->
+</launch>

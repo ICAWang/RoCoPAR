@@ -1,0 +1,21 @@
+<launch>
+    <!-- arguments -->
+	<arg name="start_pose_x" default="0.0"/>
+	<arg name="start_pose_y" default="0.0"/>
+	<arg name="start_pose_z" default="0.0"/>
+	<arg name="start_pose_yaw" default="0.0"/>
+
+    <!-- use robot pose ekf to provide odometry-->
+    <node pkg="robot_pose_ekf" name="robot_pose_ekf" type="robot_pose_ekf">
+        <param name="output_frame" value="odom" />
+        <param name="base_footprint_frame" value="base_link"/>
+        <remap from="imu_data" to="imu" />
+    </node>
+
+    <node pkg="amcl" type="amcl" name="amcl" output="screen">
+        <rosparam file="$(find rocopar_bringup)/config/amcl_params_diffe.yaml" command="load" />
+        <param name="initial_pose_x" value="$(arg start_pose_x)"/>
+        <param name="initial_pose_y" value="$(arg start_pose_y)"/>
+        <param name="initial_pose_a" value="$(arg start_pose_yaw)"/>
+    </node>
+</launch>

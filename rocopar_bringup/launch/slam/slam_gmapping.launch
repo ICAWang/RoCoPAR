@@ -1,0 +1,51 @@
+<launch>
+  <!-- arguments -->
+  <arg name="robot_namespace" default=""/>
+  <arg name="map_topic" default="map"/>
+  <arg name="scan_topic" default="scan"/>
+  <arg name="maxUrange" default="5.9"/>
+  <arg name="xmin" default="-20"/>
+  <arg name="ymin" default="-20"/>
+  <arg name="xmax" default="20"/>
+  <arg name="ymax" default="20"/>
+
+  <!-- slam_gmapping -->
+  <node name="slam_gmapping" pkg="gmapping" type="slam_gmapping"  
+    output="screen">
+    <remap from="scan_map" to="$(arg map_topic)"/>
+    <remap from="scan" to="$(arg scan_topic)"/>
+    <param name="map_frame" value="map"/>
+    <param name="odom_frame" value="$(arg robot_namespace)/scan_odom"/>
+    <param name="base_frame" value="$(arg robot_namespace)/base_link"/>
+    <param name="map_update_interval" value="1"/>
+    <param name="maxUrange" value="$(arg maxUrange)"/>
+    <param name="sigma" value="0.05"/>
+    <param name="kernelSize" value="1"/>
+    <param name="lstep" value="0.05"/>
+    <param name="astep" value="0.05"/>
+    <param name="iterations" value="5"/>
+    <param name="lsigma" value="0.075"/>
+    <param name="ogain" value="3.0"/>
+    <param name="lskip" value="0"/>
+    <param name="minimumScore" value="20"/>
+    <param name="srr" value="0.01"/>
+    <param name="srt" value="0.02"/>
+    <param name="str" value="0.01"/>
+    <param name="stt" value="0.02"/>
+    <param name="linearUpdate" value="0.5"/>
+    <param name="angularUpdate" value="0.436"/>
+    <param name="temporalUpdate" value="-1.0"/>
+    <param name="resampleThreshold" value="0.5"/>
+    <param name="particles" value="40"/>
+    <param name="xmin" value="$(arg xmin)"/>
+    <param name="ymin" value="$(arg ymin)"/>
+    <param name="xmax" value="$(arg xmax)"/>
+    <param name="ymax" value="$(arg ymax)"/>
+    <param name="delta" value="0.1"/>
+    <param name="llsamplerange" value="0.01"/>
+    <param name="llsamplestep" value="0.01"/>
+    <param name="lasamplerange" value="0.005"/>
+    <param name="lasamplestep" value="0.005"/>
+    <param name="transform_publish_period" value="0.1"/>
+  </node>
+</launch>

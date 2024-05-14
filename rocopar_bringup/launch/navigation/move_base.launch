@@ -1,0 +1,28 @@
+<launch>
+<!-- arguments -->
+	<arg name="robot_namespace" default=""/>
+	<arg name="model" default="diff" doc="model type [diff, omni, car]"/>
+	<arg name="map_topic" default="scan_map"/>
+	<arg name="scan_topic" default="scan"/>
+
+	<!-- move_base -->
+	<node name="move_base" pkg="move_base" type="move_base" respawn="false" 
+	output="screen">
+		<remap from="map" to="$(arg map_topic)"/>
+		<remap from="scan" to="$(arg scan_topic)"/>
+		<!-- configure the parameters of costmap -->
+		<param name="global_costmap/global_frame" value="$(arg robot_namespace)/map"/>
+		<param name="global_costmap/robot_base_frame" value="$(arg robot_namespace)/base_link"/>
+		<param name="local_costmap/global_frame" value="$(arg robot_namespace)/odom"/>
+		<param name="local_costmap/robot_base_frame" value="$(arg robot_namespace)/base_link"/>
+		<rosparam file="$(find rocopar_bringup)/config/$(arg model)/costmap_common_params.yaml" command="load" ns="global_costmap"/>
+		<rosparam file="$(find rocopar_bringup)/config/$(arg model)/costmap_common_params.yaml" command="load" ns="local_costmap"/>
+		<rosparam file="$(find rocopar_bringup)/config/$(arg model)/local_costmap_params.yaml" command="load"/>
+		<rosparam file="$(find rocopar_bringup)/config/$(arg model)/global_costmap_params.yaml" command="load"/>
+
+		<!-- configure the parameters of planner -->
+		<rosparam file="$(find rocopar_bringup)/config/$(arg model)/move_base_params.yaml" command="load"/>
+		<rosparam file="$(find rocopar_bringup)/config/$(arg model)/local_planner_params.yaml" command="load"/>
+		<rosparam file="$(find rocopar_bringup)/config/$(arg model)/global_planner_params.yaml" command="load"/>
+	</node>
+</launch>

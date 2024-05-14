@@ -1,0 +1,191 @@
+<launch>
+	<!-- arguments and parameters -->
+
+	<!-- simulator parameter -->
+	<arg name="model" value="diff" doc="[diff, omni, car]"/>
+    <arg name="env_map" value="office_0" doc="[obstacles, roomba-stage]"/>
+	<arg name="obstacle_height" value="1.5"/>
+	<!-- planner parameter -->
+	<arg name="number_of_robots" value="4"/>
+	<arg name="max_com_dis" value="2.5"/>
+	<arg name="time_delay" value="200.0"/>
+	<arg name="Te" value="0.0"/>
+	<arg name="base_pose_x" value="22.5"/>
+	<arg name="base_pose_y" value="13.5"/>
+	<arg name="base_pose_z" value="0.0"/>
+	<arg name="max_speed" value="0.4"/>
+	<!-- slam parameter -->
+	<arg name="maxUrange" value="5.9"/>
+	<arg name="xmin" value="-30"/>
+	<arg name="ymin" value="-30"/>
+	<arg name="xmax" value="30"/>
+	<arg name="ymax" value="30"/>
+	<!-- frontier generator parameter -->
+	<arg name="frontier_max_x" value="27"/>
+	<arg name="frontier_max_y" value="18"/>
+	<arg name="frontier_min_x" value="-27"/>
+	<arg name="frontier_min_y" value="-18"/>
+	<!-- map merge parameter-->
+	<arg name="map_origin_x" value="-30"/>
+	<arg name="map_origin_y" value="-30"/>
+
+	<param name="/use_sim_time" value="true"/>
+
+	<!-- stage_ros -->
+	<node name="stageros" pkg="rocopar_stageros" type="stageros"
+		args="$(find rocopar_bringup)/worlds/stage/$(arg env_map).world"
+		output="screen" respawn="true">
+		<param name="base_watchdog_timeout" value="0.2"/>
+	</node>
+
+	<!-- ======== Bringup instances of robots ======== -->
+	<!-- begin robot_0 -->
+	<include file="$(find rocopar_bringup)/launch/robot_bringup.launch">
+		<arg name="robot_namespace" value="robot_0" />
+		<arg name="id" value="0"/>
+		<arg name="max_com_dis" value="$(arg max_com_dis)"/>
+		<arg name="time_delay" value="$(arg time_delay)"/>
+		<arg name="Te" value="$(arg Te)"/>
+		<arg name="number_of_robots" value="$(arg number_of_robots)"/>
+        <arg name="init_pose_x" value="22.0"/>
+        <arg name="init_pose_y" value="13.0"/>
+        <arg name="init_pose_z" value="0.0"/>
+        <arg name="init_pose_yaw" value="270.0"/>
+		<arg name="base_pose_x" value="$(arg base_pose_x)"/>
+		<arg name="base_pose_y" value="$(arg base_pose_y)"/>
+		<arg name="base_pose_z" value="$(arg base_pose_z)"/>
+		<arg name="max_speed" value="$(arg max_speed)"/>
+		<arg name="maxUrange" value="$(arg maxUrange)"/>
+		<arg name="xmin" value="$(arg xmin)"/>
+		<arg name="ymin" value="$(arg ymin)"/>
+		<arg name="xmax" value="$(arg xmax)"/>
+		<arg name="ymax" value="$(arg ymax)"/>
+		<arg name="frontier_max_x" value="$(arg frontier_max_x)"/>
+		<arg name="frontier_max_y" value="$(arg frontier_max_y)"/>
+		<arg name="frontier_min_x" value="$(arg frontier_min_x)"/>
+		<arg name="frontier_min_y" value="$(arg frontier_min_y)"/>
+		<arg name="map_origin_x" value="$(arg map_origin_x)"/>
+		<arg name="map_origin_y" value="$(arg map_origin_y)"/>
+	</include>
+
+	<!-- begin robot_1 -->
+	<include file="$(find rocopar_bringup)/launch/robot_bringup.launch">
+		<arg name="robot_namespace" value="robot_1" />
+		<arg name="id" value="1"/>
+		<arg name="max_com_dis" value="$(arg max_com_dis)"/>
+		<arg name="time_delay" value="$(arg time_delay)"/>
+		<arg name="Te" value="$(arg Te)"/>
+		<arg name="number_of_robots" value="$(arg number_of_robots)"/>
+        <arg name="init_pose_x" value="22.5"/>
+        <arg name="init_pose_y" value="13.0"/>
+        <arg name="init_pose_z" value="0.0"/>
+        <arg name="init_pose_yaw" value="270.0"/>
+		<arg name="base_pose_x" value="$(arg base_pose_x)"/>
+		<arg name="base_pose_y" value="$(arg base_pose_y)"/>
+		<arg name="base_pose_z" value="$(arg base_pose_z)"/>
+		<arg name="max_speed" value="$(arg max_speed)"/>
+		<arg name="maxUrange" value="$(arg maxUrange)"/>
+		<arg name="xmin" value="$(arg xmin)"/>
+		<arg name="ymin" value="$(arg ymin)"/>
+		<arg name="xmax" value="$(arg xmax)"/>
+		<arg name="ymax" value="$(arg ymax)"/>
+		<arg name="frontier_max_x" value="$(arg frontier_max_x)"/>
+		<arg name="frontier_max_y" value="$(arg frontier_max_y)"/>
+		<arg name="frontier_min_x" value="$(arg frontier_min_x)"/>
+		<arg name="frontier_min_y" value="$(arg frontier_min_y)"/>
+		<arg name="map_origin_x" value="$(arg map_origin_x)"/>
+		<arg name="map_origin_y" value="$(arg map_origin_y)"/>
+	</include>
+
+	<!-- begin robot_2 -->
+	<include file="$(find rocopar_bringup)/launch/robot_bringup.launch">
+		<arg name="robot_namespace" value="robot_2" />
+		<arg name="id" value="2"/>
+		<arg name="max_com_dis" value="$(arg max_com_dis)"/>
+		<arg name="time_delay" value="$(arg time_delay)"/>
+		<arg name="Te" value="$(arg Te)"/>
+		<arg name="number_of_robots" value="$(arg number_of_robots)"/>
+        <arg name="init_pose_x" value="23.0"/>
+        <arg name="init_pose_y" value="13.0"/>
+        <arg name="init_pose_z" value="0.0"/>
+        <arg name="init_pose_yaw" value="270.0"/>
+		<arg name="base_pose_x" value="$(arg base_pose_x)"/>
+		<arg name="base_pose_y" value="$(arg base_pose_y)"/>
+		<arg name="base_pose_z" value="$(arg base_pose_z)"/>
+		<arg name="max_speed" value="$(arg max_speed)"/>
+		<arg name="maxUrange" value="$(arg maxUrange)"/>
+		<arg name="xmin" value="$(arg xmin)"/>
+		<arg name="ymin" value="$(arg ymin)"/>
+		<arg name="xmax" value="$(arg xmax)"/>
+		<arg name="ymax" value="$(arg ymax)"/>
+		<arg name="frontier_max_x" value="$(arg frontier_max_x)"/>
+		<arg name="frontier_max_y" value="$(arg frontier_max_y)"/>
+		<arg name="frontier_min_x" value="$(arg frontier_min_x)"/>
+		<arg name="frontier_min_y" value="$(arg frontier_min_y)"/>
+		<arg name="map_origin_x" value="$(arg map_origin_x)"/>
+		<arg name="map_origin_y" value="$(arg map_origin_y)"/>
+	</include>
+	<!-- begin robot_3 -->
+	<include file="$(find rocopar_bringup)/launch/robot_bringup.launch">
+		<arg name="robot_namespace" value="robot_3" />
+		<arg name="id" value="3"/>
+		<arg name="max_com_dis" value="$(arg max_com_dis)"/>
+		<arg name="time_delay" value="$(arg time_delay)"/>
+		<arg name="Te" value="$(arg Te)"/>
+		<arg name="number_of_robots" value="$(arg number_of_robots)"/>
+        <arg name="init_pose_x" value="22.0"/>
+        <arg name="init_pose_y" value="13.5"/>
+        <arg name="init_pose_z" value="0.0"/>
+        <arg name="init_pose_yaw" value="270"/>
+		<arg name="base_pose_x" value="$(arg base_pose_x)"/>
+		<arg name="base_pose_y" value="$(arg base_pose_y)"/>
+		<arg name="base_pose_z" value="$(arg base_pose_z)"/>
+		<arg name="max_speed" value="$(arg max_speed)"/>
+		<arg name="maxUrange" value="$(arg maxUrange)"/>
+		<arg name="xmin" value="$(arg xmin)"/>
+		<arg name="ymin" value="$(arg ymin)"/>
+		<arg name="xmax" value="$(arg xmax)"/>
+		<arg name="ymax" value="$(arg ymax)"/>
+		<arg name="frontier_max_x" value="$(arg frontier_max_x)"/>
+		<arg name="frontier_max_y" value="$(arg frontier_max_y)"/>
+		<arg name="frontier_min_x" value="$(arg frontier_min_x)"/>
+		<arg name="frontier_min_y" value="$(arg frontier_min_y)"/>
+		<arg name="map_origin_x" value="$(arg map_origin_x)"/>
+		<arg name="map_origin_y" value="$(arg map_origin_y)"/>
+	</include>
+	<!-- begin base_station -->
+	<!--<include file="$(find exploration_planner)/launch/base_station.launch">
+		<arg name="id" value="3"/>
+		<arg name="max_com_dis" value="$(arg max_com_dis)"/>
+		<arg name="time_delay" value="$(arg time_delay)"/>
+        <arg name="init_pose_x" value="7.0"/>
+        <arg name="init_pose_y" value="3.0"/>
+        <arg name="init_pose_z" value="0.0"/>
+	</include>-->
+
+
+	<!-- multirobot_map_merge -->
+	<include file="$(find rocopar_bringup)/launch/multirobot_map_merge.launch">
+		<arg name="map_origin_x" value="$(arg map_origin_x)"/>
+		<arg name="map_origin_y" value="$(arg map_origin_y)"/>
+	</include>
+
+	<!-- transfer 2D occupancygrid to pointcloud-->
+	<!--
+	<include file="$(find rocopar_visulization)/launch/grid2cloud.launch">
+		<arg name="obstacle_height" value="$(arg obstacle_height)"/>
+	</include>
+	-->
+
+	<!-- transer pointcloud to octomap -->
+	<!--
+	<include file="$(find rocopar_visulization)/launch/cloud2octomap.launch"/>
+	-->
+
+	<!-- rviz -->
+	<!-- <group if="$(arg open_rviz)"> -->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find rocopar_bringup)/rviz/test.rviz"/>
+	<!--<node name="rviz" pkg="rviz" type="rviz" args="-d $(find rocopar_bringup)/rviz/multi_robots.rviz"/>
+	<node name="rviz2" pkg="rviz" type="rviz" args="-d $(find rocopar_bringup)/rviz/multi_color_map.rviz"/>-->
+	<!-- </group> -->
+</launch>

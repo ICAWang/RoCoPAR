@@ -1,0 +1,198 @@
+# Author: Arkapravo Bhaumik
+# Illustrates the 'standalone' ability of Stage 3.X.X and above
+# Use this command to run this script - 'stage simple_stage_standalone.world'
+
+define p2dx_sonar ranger
+(
+  scount 16 # the number of transducers
+
+  # define the pose of each transducer [xpos ypos heading]
+  spose[0] [ 0.075 0.130 90 ]
+  spose[1] [ 0.115 0.115 50 ]
+  spose[2] [ 0.150 0.080 30 ]
+  spose[3] [ 0.170 0.025 10 ]
+  spose[4] [ 0.170 -0.025 -10 ]
+  spose[5] [ 0.150 -0.080 -30 ]
+  spose[6] [ 0.115 -0.115 -50 ]
+  spose[7] [ 0.075 -0.130 -90 ]
+  spose[8] [ -0.155 -0.130 -90 ]
+  spose[9] [ -0.195 -0.115 -130 ]
+  spose[10] [ -0.230 -0.080 -150 ]
+  spose[11] [ -0.250 -0.025 -170 ]
+  spose[12] [ -0.250 0.025 170 ]
+  spose[13] [ -0.230 0.080 150 ]
+  spose[14] [ -0.195 0.115 130 ]
+  spose[15] [ -0.155 0.130 90 ]	
+		
+  sview [0 5.0 15]
+  ssize [0.01 0.05]
+)
+
+define p2dx_sonar_front ranger
+(
+  scount 8 # the number of transducers
+
+  # define the pose of each transducer [xpos ypos heading]
+  spose[0] [ 0.075 0.130 90 ]
+  spose[1] [ 0.115 0.115 50 ]
+  spose[2] [ 0.150 0.080 30 ]
+  spose[3] [ 0.170 0.025 10 ]
+  spose[4] [ 0.170 -0.025 -10 ]
+  spose[5] [ 0.150 -0.080 -30 ]
+  spose[6] [ 0.115 -0.115 -50 ]
+  spose[7] [ 0.075 -0.130 -90 ]
+
+  # define the field of view of each transducer [range_min range_max view_angle]
+  sview [0 5.0 15]
+
+  # define the size of each transducer [xsize ysize] in meters
+  ssize [0.01 0.05]
+)
+
+
+define pioneer_base position 
+(
+  color "red"			# Default color.
+  drive "diff"		 	# Differential steering model.
+  gui_nose 1                  	# Draw a nose on the robot so we can see which way it points
+  obstacle_return 1           	# Can hit things.
+  laser_return 1                 # reflects laser beams
+  ranger_return 1             	# reflects sonar beams
+  blob_return 1               	# Seen by blobfinders  
+  fiducial_return 1           	# Seen as "1" fiducial finders
+
+  localization "gps"         	  
+  localization_origin [0 0 0 0] 	# Start odometry at (0, 0, 0).
+)
+
+define pioneer2dx_base_no_sonar pioneer_base
+(
+  size [0.44 0.38 0.22] # sizes from MobileRobots' web site
+  origin [-0.04 0 0 0]
+  gui_nose 1
+  mass 23.0 
+  drive "diff"
+ )
+
+define pioneer2dx_base pioneer2dx_base_no_sonar
+(
+  p2dx_sonar( pose [0 0 -0.03 0] ) 
+)
+
+define pioneer2dx_base_front_sonar pioneer2dx_base_no_sonar
+(
+  p2dx_sonar_front( pose [0 0 -0.03 0] ) 
+)
+
+define pioneer2dx pioneer2dx_base
+(  
+  # simplified Body shape:
+  block( 
+    points 8
+    point[0] [-0.2 0.12]
+    point[1] [-0.2 -0.12]
+    point[2] [-0.12 -0.2555]
+    point[3] [0.12 -0.2555]
+    point[4] [0.2 -0.12]
+    point[5] [0.2 0.12]
+    point[6] [0.12 0.2555]
+    point[7] [-0.12 0.2555]
+    z [0 0.22]
+  )
+)
+
+define pioneer2dx_front_sonar pioneer2dx_base_front_sonar
+(  
+  # simplified Body shape:
+  block( 
+    points 8
+    point[0] [-0.2 0.12]
+    point[1] [-0.2 -0.12]
+    point[2] [-0.12 -0.2555]
+    point[3] [0.12 -0.2555]
+    point[4] [0.2 -0.12]
+    point[5] [0.2 0.12]
+    point[6] [0.12 0.2555]
+    point[7] [-0.12 0.2555]
+    z [0 0.22]
+  )
+)
+
+define sicklaser laser
+(
+  # laser-specific properties
+  # factory settings for LMS200	
+  range_max 8.0
+  fov 180.0
+  samples 361
+
+  #samples 90 # still useful but much faster to compute
+
+  # generic model properties
+  color "blue"
+  size [ 0.156 0.155 0.19 ] # dimensions from LMS200 data sheet	
+)
+
+define floorplan model
+(
+  # sombre, sensible, artistic
+  color "gray30"
+
+  # most maps will need a bounding box
+  boundary 1
+
+  gui_nose 0
+  gui_grid 0
+  gui_move 0
+  gui_outline 0
+  gripper_return 0
+  fiducial_return 0
+  laser_return 1
+)
+
+# time to pause (in GUI mode) or quit (in headless mode (-g)) the simulation
+# quit_time 3600 # 1 hour of simulated time
+
+speedup 5
+
+paused 1
+
+resolution 0.02
+
+# configure the GUI window
+window
+(
+  size [ 635.000 666.000 ] # in pixels
+  scale 37.481   # pixels per meter
+  center [ -0.019  -0.282 ]
+  rotate [ 0  0 ]
+  			
+  show_data 1              # 1=on 0=off
+)
+
+# load an environment bitmap
+floorplan
+( 
+  name "cave"
+  size [16.000 16.000 0.800]
+  pose [0 0 0 0]
+  bitmap "cave.png"
+)
+
+pioneer2dx
+(		  
+  # can refer to the robot by this name
+  name "r0"
+  pose [ -7 -7 0 45 ] 
+
+  sicklaser(   
+     #ctrl "lasernoise"  # uncomment this line to run a laser noise generator
+  )
+ 
+   ctrl "wander" #the robot starts moving as it is set to wander 
+
+  # report error-free position in world coordinates
+  localization "gps"
+  localization_origin [ 0 0 0 0 ]
+)
+

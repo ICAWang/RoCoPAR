@@ -1,0 +1,88 @@
+include "map.inc"
+ 
+resolution 0.02
+interval_sim 20  # simulation timestep in milliseconds
+ 
+# configure the GUI window
+window
+(
+  size [ 800.000 800.000 ] # in pixels
+  scale 25 # pixels per meter
+  center [ 0.0  0.0 ]
+  rotate [ 0.0  0.0 ]  			
+  show_data 1# 1=on 0=off
+)
+ 
+ 
+# load an environment bitmap
+floorplan
+(
+  name "roomba-stage"
+  bitmap "bitmaps/roomba-stage.png"
+  size [ 20.0 15.0 1.0 ]
+  pose [ 0.0 0.0 0.0 0.0]
+)
+ 
+define laser ranger
+(
+ 
+  # generic model properties
+  color "blue"
+  size [ 0.156 0.155 0.19 ]
+  sensor
+  (
+    range [0.0 8.0]
+    fov 360.0
+    samples 360    
+  )
+ 
+)
+#define laser2 ranger
+#(
+ 
+  # generic model properties
+ # color "blue"
+ # size [ 0.156 0.155 0.19 ]
+  #sensor
+  #(
+   # range [0.0 8.0]
+  ##  fov 360.0
+   # samples 360    
+ # )
+ 
+#)
+define robot position
+(
+  size [ 0.33 0.33 0.2 ]
+  #pose [ 0.0 0.0 0.0 0.0 ]  
+  localization "odom"
+  localization_origin [ 0.0 0.0 0.0 0.0 ]
+ 
+  # odometry error model parameters, 
+  # only used if localization is set to "odom"
+  odom_error [ 0.0 0.0 0.0 0.0 ]
+  color "gray50"
+  origin [ 0.0 0.0 0.0 0.0 ]
+  #positonal things
+  drive "diff"
+  gui_nose 1
+  laser(
+        pose [ 0.0 0.0 0.5 0.0 ] 
+	ctrl "lasernoise" 
+	alwayson 1	
+	)
+  #laser2(
+        #pose [ 0.0 0.0 0.5 0.0 ] 
+	#ctrl "lasernoise" 
+	#alwayson 1	
+	#)
+  #ctrl "wander" #uncomment this when $stage test.world
+ 
+)
+robot
+(
+ name "roomba"
+ pose [-8.0 6.0 0.0 0.0] 
+ #color "green"
+ 
+)

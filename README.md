@@ -20,17 +20,23 @@ especially in search and rescue scenarios.
 
 
 ## Development
-- **Stage one**(now): In ros_stage, leverage a single robot to explore the whole map autonomously, and recognize the target near itself;
-    > Deadline: May 17
-
-- **Stage two**: In gazebo, leverage a single robot with camera to explore the map and identify the target object;
-    > Deadline: May 21
-
-- **Stage three**: In gazebo, leverage a fleet of robots to explore the whole map, while recognizing all targets;
+- **Stage one**(now): In ros_stage, leverage a single robot to explore the whole map autonomously, and recognize the target near itself:
+    > Deadline: May 22
+  - Explore the unknown workspace via [frontier_exploration](http://wiki.ros.org/frontier_exploration)
+  - Explore the unknown workspace via [rrt_exploration](http://wiki.ros.org/rrt_exploration)
+  - Recognize target boxes and publish to the screen.
+  - Extend to multi-robot scenarios.
+  
+- **Stage two**: In ros_stage, leverage multiple robots to explore the whole map autonomously, and react to the triggered tasks:
     > Deadline: May 30
 
-- **Stage four**: In gazebo, explore and response to the triggered tasks.
+
+
+- **Stage three**: In gazebo, leverage a fleet of robots to explore the whole map, while recognizing all targets;
     > Deadline: June 10
+
+- **Stage four**: In gazebo, explore and response to the triggered tasks.
+    > Deadline: June 20
 
 
 

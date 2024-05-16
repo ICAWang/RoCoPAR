@@ -66,7 +66,8 @@ add_library(combine_grid STATIC
 add_dependencies(combine_grid ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(combine_grid ${OpenCV_LIBRARIES})
 
-add_executable(map_merge src/map_merge.cpp
+add_executable(map_merge
+  src/map_merge.cpp
 )
 add_dependencies(map_merge ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(map_merge combine_grid ${catkin_LIBRARIES})

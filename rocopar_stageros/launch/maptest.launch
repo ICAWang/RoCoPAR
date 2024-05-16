@@ -1,6 +1,6 @@
 <launch>
   <arg name="world_file" default="$(find stage_ros_add_pose_and_crash)/world/simple.world" />
-  <node name="stageros" type="stageros" pkg="stage_ros_add_pose_and_crash" args="-g $(arg world_file)">
+  <node name="stageros" type="stageros" pkg="rocopar_stageros" args="-g $(arg world_file)">
     <remap from="/robot_0/base_pose_ground_truth" to="/robot_24/base_pose_ground_truth" />
     <remap from="/robot_0/base_scan" to="/robot_24/base_scan" />
     <remap from="/robot_0/cmd_pose" to="/robot_24/cmd_pose" />

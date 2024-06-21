@@ -99,6 +99,7 @@
 
 	<!-- rviz -->
 	<!-- <group if="$(arg open_rviz)"> -->
+	<!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find rocopar_bringup)/rviz/test.rviz"/> -->
 	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find rocopar_bringup)/rviz/test.rviz"/>
 	<!--<node name="rviz" pkg="rviz" type="rviz" args="-d $(find rocopar_bringup)/rviz/multi_robots.rviz"/>
 	<node name="rviz2" pkg="rviz" type="rviz" args="-d $(find rocopar_bringup)/rviz/multi_color_map.rviz"/>-->
